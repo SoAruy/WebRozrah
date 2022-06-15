@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Car Rent</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+  <link rel="stylesheet" href="css/aos.css">
+
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<script>
+  const availableCars = ['RangeRoverR7', 'AudiS8', 'Hyundaii30N', 'ChevroletCamaro', 'BMW4SeriesGranCoupe',
+    'TeslaModel3', 'HennesseyMammoth1000', 'NissanRogue', 'HondaCivic', 'JeepGrandCherokee']
+  const price = [190,140,110,230,170,250,130,150,90,180];
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  
+  if (!urlParams.has('car'))
+    window.open("./index.html#", '_self');
+  let carModel = urlParams.get('car');
+  const carNumber = contains(availableCars, carModel);
+  if (carNumber < 0) {
+    window.open("./index.html#", '_self');
+  }
+
+
+
+  function contains(array = [], string = '') {
+    for (i = 0; i < array.length; i++) {
+      if (array[i].valueOf() == string.valueOf())
+        return i;
+    }
+    return -1;
+  }
+</script>
+
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+
+  <div class="site-wrap" id="home-section">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+
+
+    <header class="site-navbar site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center position-relative">
+
+          <div class="col-3 ">
+            <div class="site-logo">
+              <a href="index.html">CarRent</a>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+    </header>
+
+    <div class="ftco-blocks-cover-1">
+      <div class="ftco-cover-1 overlay innerpage" style="background-image: url('images/hero_4.jpg')">
+        <div class="container">
+          <div class="row align-items-center justify-content-center">
+            <div class="col-lg-6 text-center">
+              <h1>Renting</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-light" id="contact-section">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-7 text-center mb-5">
+            <h1>Choosed car:</h1>
+            <h1 id="choosed_car"></h1>
+            <script>choosed_car.innerHTML = carModel</script>
+            <h2>Use This Form To Rent A Car</h2>
+            <p>Fill out this form. <u>All labels are required.</u><br>
+              Wait for a call from the operator for verification and clarification.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8 mb-5">
+            <form action="confirmed.html" method="post">
+              <div class="form-group row">
+                <div class="col-md-6 mb-4 mb-lg-0">
+                  <input type="text" class="form-control" placeholder="First name *" required />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Second name *" required />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <input type="email" class="form-control" placeholder="Email address">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <input type="tel" class="form-control" placeholder="Phone number *" pattern="[0-9]{10}" maxlength="20"
+                    required />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-6 mb-4 mb-lg-0">
+                      <input type="text" id="startTimePicker" placeholder="Rent start time"
+                        class="form-control datepicker px-3" required />
+                    </div>
+                    <div class="col-md-6 mb-4 mb-lg-0">
+                      <input type="text" id="endTimePicker" placeholder="Rent end time"
+                        class="form-control datepicker px-3" required />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <p id="dateDif"></p>
+                  <script>
+                    document.getElementById('startTimePicker').onmouseleave = function (event) {
+                      PrintDif()
+                    };
+
+                    document.getElementById('endTimePicker').onmouseleave = function (event) {
+                      PrintDif()
+                    };
+                    function PrintDif() {
+
+                      if (endTimePicker.value == '' || startTimePicker.value == '')
+                        dateDif.innerHTML = startTimePicker.value;
+                      else {
+                        var startDate = new Date(startTimePicker.value);
+                        var endDate = new Date(endTimePicker.value);
+                        var dif = (endDate - startDate) / (1000 * 60 * 60 * 24);
+                        if (dif < 0)
+                          dateDif.innerHTML = 'End date is bigger than start date';
+                        else if (dif == 0)
+                          dateDif.innerHTML = 'End date is same as start date';
+                        else
+                          dateDif.innerHTML = `Price: \$${dif * price[carNumber]}`;
+                      }
+                    }
+                  </script>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6 mr-auto">
+                  <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Send Message" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-4 ml-auto">
+            <div class="bg-white p-3 p-md-5">
+              <h3 class="text-black mb-4">Contact Info</h3>
+              <ul class="list-unstyled footer-link">
+                <li class="d-block mb-3">
+                  <span class="d-block text-black">Address:</span>
+                  <span>34 Vyshnevskogo, Kyiv, Ukraine</span>
+                </li>
+                <li class="d-block mb-3"><span class="d-block text-black">Phone:</span><span>+380678290321</span></li>
+                <li class="d-block mb-3"><span class="d-block text-black">Email:</span><span>support@crent.com</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <h2 class="footer-heading mb-4">About Us</h2>
+            <p>Our founders had the simple idea of wanting to make renting cars much better. And we have flourished
+              because our customers love how we work.
+              We started in 2021 as small startup company. Year later, we were making 100 bookings a day. Fast forward
+              to today and we are making 80.000 bookings a year! </p>
+          </div>
+          <div class="col-lg-8 ml-auto">
+            <div class="aboba">
+              <div class="col-lg-3">
+                <h2 class="footer-heading mb-4">Quick Links</h2>
+                <ul class="list-unstyled">
+                  <li><a href="about.html">About Us</a></li>
+                  <li><a href="services.html">Services</a></li>
+                  <li><a href="cars.html">Our cars</a></li>
+                  <li><a href="blog/">Our blog</a></li>
+                  <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+              <p>
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> All rights reserved
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.sticky.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/jquery.fancybox.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/bootstrap-datepicker.min.js"></script>
+  <script src="js/aos.js"></script>
+
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>
